@@ -4,6 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
 
 import Noticeboard from './Noticeboard';
+import Attendance from './Attendance';
+import Employees from './Employees';
+import Projects from './Projects';
+import Salary from './Salary';
 
 export function Profile() {
     const [data,setData] = useState([])
@@ -45,7 +49,11 @@ export function Profile() {
             <div>
                 Ethi heba
             </div>
-            <Noticeboard/>
+            {/* <Noticeboard/>
+            <Attendance />
+            <Employees/>
+            <Projects/>
+            <Salary/> */}
         </div>
     );
 }

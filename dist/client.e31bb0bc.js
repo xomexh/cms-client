@@ -34471,7 +34471,314 @@ var AddNotice = function AddNotice(props) {
 
 var _default = Noticeboard;
 exports.default = _default;
-},{"react":"node_modules/react/index.js","axios":"node_modules/axios/index.js"}],"src/Profile.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","axios":"node_modules/axios/index.js"}],"src/Attendance.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _axios = _interopRequireDefault(require("axios"));
+
+var _jwtDecode = _interopRequireDefault(require("jwt-decode"));
+
+var _reactRouterDom = require("react-router-dom");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var Attendance = function Attendance() {
+  var _useState = (0, _react.useState)([]),
+      _useState2 = _slicedToArray(_useState, 2),
+      attendances = _useState2[0],
+      setAtds = _useState2[1];
+
+  var _useParams = (0, _reactRouterDom.useParams)(),
+      name = _useParams.name;
+
+  var _useState3 = (0, _react.useState)(true),
+      _useState4 = _slicedToArray(_useState3, 2),
+      punched = _useState4[0],
+      setPunched = _useState4[1];
+
+  (0, _react.useEffect)(function () {
+    var user = (0, _jwtDecode.default)(localStorage.getItem("token"));
+
+    var promise = _axios.default.get("http://localhost:3000/attendance/".concat(user.user.uname));
+
+    promise.then(function (response) {
+      console.log(response);
+      setAtds(response.data);
+    });
+    console.log('eita use effect');
+  }, []);
+
+  var handlePunchIn = function handlePunchIn() {
+    _axios.default.post('http://localhost:3000/attendance', {
+      uname: name,
+      date: "2022-09-24"
+    }).then(function (response) {
+      console.log(response);
+      setPunched(false);
+    });
+  };
+
+  var handlePunchOut = function handlePunchOut() {
+    _axios.default.post('http://localhost:3000/attendance', {
+      uname: name,
+      date: "2022-09-24",
+      punchOut: "2022-03-08T11:58:23.664Z"
+    }).then(function (response) {
+      console.log(response);
+    });
+  };
+
+  return /*#__PURE__*/_react.default.createElement("div", null, "This is attendance", punched ? /*#__PURE__*/_react.default.createElement("button", {
+    onClick: function onClick(e) {
+      e.preventDefault();
+      handlePunchIn();
+    }
+  }, "Punch IN") : /*#__PURE__*/_react.default.createElement("button", {
+    onClick: function onClick(e) {
+      e.preventDefault();
+      handlePunchOut();
+    }
+  }, "Punch OUT"));
+};
+
+var AttendanceLI = function AttendanceLI(props) {
+  var _useState5 = (0, _react.useState)([]),
+      _useState6 = _slicedToArray(_useState5, 2),
+      attendance = _useState6[0],
+      setAtd = _useState6[1];
+
+  (0, _react.useEffect)(function () {
+    console.log(props.data);
+    setAtd(props.data);
+  }, []);
+  return /*#__PURE__*/_react.default.createElement("div", null, "id:", attendance._id, "uname:", attendance.uname, "date:", attendance.date, "punch in at: ", attendance.punchIn, "punch out at: ", attendance.punchOut);
+};
+
+var _default = Attendance;
+exports.default = _default;
+},{"react":"node_modules/react/index.js","axios":"node_modules/axios/index.js","jwt-decode":"node_modules/jwt-decode/lib/index.js","react-router-dom":"node_modules/react-router-dom/index.js"}],"src/Employees.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _axios = _interopRequireDefault(require("axios"));
+
+var _jwtDecode = _interopRequireDefault(require("jwt-decode"));
+
+var _reactRouterDom = require("react-router-dom");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var Employees = function Employees() {
+  var _useState = (0, _react.useState)([]),
+      _useState2 = _slicedToArray(_useState, 2),
+      employees = _useState2[0],
+      setE = _useState2[1];
+
+  (0, _react.useEffect)(function () {
+    var promise = _axios.default.get('http://localhost:3000/employees');
+
+    promise.then(function (response) {
+      setE(response.data);
+    }).catch(function (error) {
+      return console.log(error);
+    });
+  }, []);
+  return /*#__PURE__*/_react.default.createElement("div", null, "Eita Employees stuff", employees.map(function (employee) {
+    return /*#__PURE__*/_react.default.createElement(Employee, {
+      key: employee._id,
+      data: employee
+    });
+  }));
+};
+
+var Employee = function Employee(props) {
+  var _useState3 = (0, _react.useState)([]),
+      _useState4 = _slicedToArray(_useState3, 2),
+      employee = _useState4[0],
+      setEmp = _useState4[1];
+
+  (0, _react.useEffect)(function () {
+    setEmp(props.data);
+  }, []);
+  return /*#__PURE__*/_react.default.createElement("div", null, "name: ", employee.name, "age: ", employee.age, "current project: ", employee.project, "experience of ", employee.exp);
+};
+
+var _default = Employees;
+exports.default = _default;
+},{"react":"node_modules/react/index.js","axios":"node_modules/axios/index.js","jwt-decode":"node_modules/jwt-decode/lib/index.js","react-router-dom":"node_modules/react-router-dom/index.js"}],"src/Projects.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _axios = _interopRequireDefault(require("axios"));
+
+var _jwtDecode = _interopRequireDefault(require("jwt-decode"));
+
+var _reactRouterDom = require("react-router-dom");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var Projects = function Projects() {
+  var _useState = (0, _react.useState)([]),
+      _useState2 = _slicedToArray(_useState, 2),
+      projects = _useState2[0],
+      setProj = _useState2[1];
+
+  (0, _react.useEffect)(function () {
+    var promise = _axios.default.get('http://localhost:3000/project');
+
+    promise.then(function (response) {
+      console.log(response.data);
+      setProj(response.data);
+    }).catch(function (error) {
+      return console.log(error);
+    });
+  }, []);
+  return /*#__PURE__*/_react.default.createElement("div", null, "Eita mo Projects", projects.map(function (project) {
+    // if(project.members.includes("SomeshY")){
+    return /*#__PURE__*/_react.default.createElement(Project, {
+      key: project._id,
+      data: project
+    }); // }
+  }));
+};
+
+var Project = function Project(props) {
+  var _useState3 = (0, _react.useState)([]),
+      _useState4 = _slicedToArray(_useState3, 2),
+      project = _useState4[0],
+      setProject = _useState4[1];
+
+  (0, _react.useEffect)(function () {
+    console.log(props.data);
+    setProject(props.data);
+  }, []);
+  return /*#__PURE__*/_react.default.createElement("div", null, "name:", project.name, "member:", project.members, "start Date: ", project.startDate);
+};
+
+var _default = Projects;
+exports.default = _default;
+},{"react":"node_modules/react/index.js","axios":"node_modules/axios/index.js","jwt-decode":"node_modules/jwt-decode/lib/index.js","react-router-dom":"node_modules/react-router-dom/index.js"}],"src/Salary.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _axios = _interopRequireDefault(require("axios"));
+
+var _jwtDecode = _interopRequireDefault(require("jwt-decode"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var Salary = function Salary() {
+  var _useState = (0, _react.useState)([]),
+      _useState2 = _slicedToArray(_useState, 2),
+      salary = _useState2[0],
+      setSalary = _useState2[1];
+
+  (0, _react.useEffect)(function () {
+    var user = (0, _jwtDecode.default)(localStorage.getItem("token"));
+
+    var promise = _axios.default.get("http://localhost:3000/salary/".concat(user.user.uname));
+
+    promise.then(function (response) {
+      setSalary(response.data);
+    }).catch(function (error) {
+      return console.log(error);
+    });
+  }, []);
+  return /*#__PURE__*/_react.default.createElement("div", null, "annual : ", salary.package, "monthly :", salary.monthlyInhand, "last recived on: ", salary.last);
+};
+
+var _default = Salary;
+exports.default = _default;
+},{"react":"node_modules/react/index.js","axios":"node_modules/axios/index.js","jwt-decode":"node_modules/jwt-decode/lib/index.js"}],"src/Profile.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -34487,6 +34794,14 @@ var _reactRouterDom = require("react-router-dom");
 var _jwtDecode = _interopRequireDefault(require("jwt-decode"));
 
 var _Noticeboard = _interopRequireDefault(require("./Noticeboard"));
+
+var _Attendance = _interopRequireDefault(require("./Attendance"));
+
+var _Employees = _interopRequireDefault(require("./Employees"));
+
+var _Projects = _interopRequireDefault(require("./Projects"));
+
+var _Salary = _interopRequireDefault(require("./Salary"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -34532,12 +34847,12 @@ function Profile() {
       localStorage.clear();
       navigate("/login");
     }
-  }, "LogOut"), /*#__PURE__*/_react.default.createElement("div", null, "Ethi heba"), /*#__PURE__*/_react.default.createElement(_Noticeboard.default, null));
+  }, "LogOut"), /*#__PURE__*/_react.default.createElement("div", null, "Ethi heba"));
 }
 
 var _default = Profile;
 exports.default = _default;
-},{"react":"node_modules/react/index.js","react-router-dom":"node_modules/react-router-dom/index.js","jwt-decode":"node_modules/jwt-decode/lib/index.js","./Noticeboard":"src/Noticeboard.js"}],"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-router-dom":"node_modules/react-router-dom/index.js","jwt-decode":"node_modules/jwt-decode/lib/index.js","./Noticeboard":"src/Noticeboard.js","./Attendance":"src/Attendance.js","./Employees":"src/Employees.js","./Projects":"src/Projects.js","./Salary":"src/Salary.js"}],"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
 
 function getBundleURLCached() {
@@ -34716,7 +35031,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50444" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57860" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
