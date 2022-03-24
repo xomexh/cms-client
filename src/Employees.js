@@ -7,7 +7,7 @@ const Employees=()=>{
     const [employees,setE]=useState([])
 
     useEffect(()=>{
-        const promise =axios.get('http://localhost:3000/employees');
+        const promise =axios.get('http://localhost:3000/employees/all');
         promise.then((response)=>{
             setE(response.data)
         }).catch(error => console.log(error))

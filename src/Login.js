@@ -46,7 +46,7 @@ export function Login(props) {
         }).then((response) => {
             console.log(response);
             localStorage.setItem('token', response.data);
-            navigate(`/profile/${name}`);
+            navigate(`/dashboard/${name}`);
         }).catch((error) => {
             console.log(error.response);
         });
