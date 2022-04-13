@@ -82,7 +82,7 @@ export function Login(props) {
                         id="exampleInputPassword1" />
 
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary" style={{'cursor':'pointer'}}>Submit</button>
             </form>
 
             <p>

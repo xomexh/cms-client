@@ -3,8 +3,13 @@ import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import { useParams } from 'react-router-dom';
 
+import logo from '../logo.png'
+import Accordion from 'react-bootstrap/Accordion'
+
 const Employees=()=>{
     const [employees,setE]=useState([])
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage] = useState(2);
 
     useEffect(()=>{
         const promise =axios.get('http://localhost:3000/employees/all');
@@ -14,12 +19,26 @@ const Employees=()=>{
 
     },[])
 
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = employees.slice(indexOfFirstPost, indexOfLastPost);
+
+    const paginate = pageNumber => setCurrentPage(pageNumber);
+
     return(
         <div>
-            Eita Employees stuff 
-            {employees.map((employee=>(
+            <h3>Employees</h3>
+            {currentPosts.map((employee=>(
                 <Employee key={employee._id} data={employee}/>
             )))}
+            <div>
+            <Pagination
+            postsPerPage={postsPerPage}
+            totalPosts={employees.length}
+            paginate={paginate}
+             /> 
+            </div>
+            
         </div>
     )
 }
@@ -32,14 +51,50 @@ const Employee =(props)=>{
 
     return(
         <div>
-           name: {employee.name} 
+           {/* name: {employee.name} 
            age: {employee.age}
            current project: {employee.project}
 
-           experience of {employee.exp}
+           experience of {employee.exp} */}
+
+           <Accordion>
+               <Accordion.Item eventKey={employee._id}>
+                   <Accordion.Header>
+                        <img style={{'width':'30px','borderRadius':'20px','margin':'10px'}} src={logo} alt=""/>
+                        {employee.name}
+                   </Accordion.Header>
+                   <Accordion.Body>
+                    age: {employee.age}<br/>
+                    current project: {employee.project}<br/>
+                    experience of {employee.exp}<br/>
+                   </Accordion.Body>
+               </Accordion.Item>
+           </Accordion>
 
         </div>
     )
 }
+
+const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
+    const pageNumbers = [];
+  
+    for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
+      pageNumbers.push(i);
+    }
+  
+    return (
+      <nav>
+        <ul className='pagination'>
+          {pageNumbers.map(number => (
+            <li key={number} className='page-item'>
+              <a onClick={() => paginate(number)} href='#' className='page-link'>
+                {number}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    );
+  };
 
 export default Employees;
