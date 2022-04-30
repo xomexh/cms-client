@@ -60,13 +60,12 @@ const Employee =(props)=>{
            <Accordion>
                <Accordion.Item eventKey={employee._id}>
                    <Accordion.Header>
-                        <img style={{'width':'30px','borderRadius':'20px','margin':'10px'}} src={logo} alt=""/>
-                        {employee.name}
+                        <img style={{'width':'30px','borderRadius':'20px','margin':'10px'}} src={employee.profilePhoto} alt=""/>
+                        {employee.firstname} {employee.lastname}
                    </Accordion.Header>
                    <Accordion.Body>
-                    age: {employee.age}<br/>
-                    current project: {employee.project}<br/>
-                    experience of {employee.exp}<br/>
+                    current project: {employee.currentProject}<br/>
+                    
                    </Accordion.Body>
                </Accordion.Item>
            </Accordion>

@@ -7,9 +7,9 @@ import Dashboard from './Dashboard';
 import Error from './ErrorPage';
 import Noticeboard from './Noticeboard';
 import Navbar from './Navbar';
-import Profiles from './Profiles';
+import EditProfile from './Profiles';
 import Employees from './Employees';
-
+import Calender2 from './Calender2';
 
 export function App() {
     
@@ -36,6 +36,8 @@ export function App() {
                 <Route path="/error" element={<Error/>}/>
                 <Route path="/notices" element={<Noticeboard/>}/>
                 <Route path="/employees" element={<Employees/>}/>
+                <Route path="/editprofile" element={<EditProfile/>}/>
+                <Route path="/calender" element={<Calender2/>}/>
             </Routes>
             </section>
             

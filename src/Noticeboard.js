@@ -2,6 +2,8 @@ import React,{useState,useEffect} from 'react';
 import axios from 'axios';
 import { render } from 'react-dom';
 import ReactDOM from 'react-dom';
+import jwtDecode from 'jwt-decode';
+
 
 import Accordion from 'react-bootstrap/Accordion'
 import Badge from 'react-bootstrap/Badge'
@@ -13,6 +15,7 @@ const Noticeboard = ()=>{
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage] = useState(5);
+    const [filteredNotice,setFilteredNotice]=useState([])
 
     useEffect(()=>{
         const promise = axios.get('http://localhost:3000/messages/all')
@@ -20,6 +23,7 @@ const Noticeboard = ()=>{
             console.log(response)
             setNotices(response.data)
             setLoading(false)
+            setFilteredNotice(response.data)
         })
         console.log('eita use effect')
     },[])
@@ -35,8 +39,9 @@ const Noticeboard = ()=>{
         console.log(id)
     }
 
-    const handleAdd=(from,to,msg,id)=>{
+    const handleAdd=(title,from,to,msg,id)=>{
         axios.post('http://localhost:3000/messages', {
+            title:title,
             from: from,
             to: to,
             message:msg,
@@ -47,19 +52,31 @@ const Noticeboard = ()=>{
             promise.then((response)=>{
             console.log(response)
             setNotices(response.data)
+            setFilteredNotice(response.data)
         })
         });
     }
 
+    const handleFilter=(event)=>{
+        const searchWord=event.target.value;
+        const newFilter=notices.filter((value)=>{
+            return value.title.toLowerCase().includes(searchWord.toLowerCase())
+        });
+        console.log(newFilter)
+        setFilteredNotice(newFilter)
+    }
+
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const currentPosts = notices.slice(indexOfFirstPost, indexOfLastPost);
+    // const currentPosts = notices.slice(indexOfFirstPost, indexOfLastPost);
+    const currentPosts = filteredNotice.slice(indexOfFirstPost, indexOfLastPost);
 
     const paginate = pageNumber => setCurrentPage(pageNumber);
     return(
         <div className='notice-box'>
             <h1>Notice Board</h1>
             <div>
+                <input type="text" placeholder='search notices' onChange={handleFilter}/>
             {currentPosts.map((notice => (
                 <Notice key={notice._id} data={notice} handleDelete={handleDelete} handleAdd={handleAdd}/>
             )))}
@@ -109,12 +126,13 @@ const Notice = (props)=>{
             <Accordion >
                 <Accordion.Item eventKey={notice.id}>
                 <Accordion.Header>
-                    {notice.message}
+                    {notice.title}
                     <Badge bg="secondary">{notice.from}</Badge>
                 </Accordion.Header>
                 <Accordion.Body>{notice.message}<br/>
-                from: {notice.from}<br/>
-                to:{notice.to}<br/>
+                From: {notice.from}
+                To:{notice.to}
+                <br/>
 
                 <button onClick={(e)=>{
                     e.preventDefault();
@@ -123,13 +141,13 @@ const Notice = (props)=>{
                     >Delete
                 </button>
 
-                <button onClick={(e)=>{
+                {/* <button onClick={(e)=>{
                     e.preventDefault();
                     //ReactDOM.render(<AddNotice data={notice} handleAdd={props.handleAdd} />, document.getElementById('sandy'));
                     }}
                     className="btn btn-warning"
                     >Update
-                </button>
+                </button> */}
                 </Accordion.Body>
                 </Accordion.Item>
             </Accordion>
@@ -160,15 +178,18 @@ const AddNotice=(props)=>{
     const [msg,setMsg]=useState('')
     const [from,setFrom]=useState('')
     const [to,setTo]=useState('')
+    const [title,setTitle]=useState('')
 
     useEffect(()=>{
+        const user=jwtDecode(localStorage.getItem("token"))
         try{
             setMsg(props.data.message)
-            setFrom(props.data.from)
+            setFrom(user.user.uname)
             setTo(props.data.to)
             console.log(props.data)
         }
         catch{
+            setFrom(user.user.uname)
             console.log("catch block")
         }
     },[])
@@ -180,16 +201,22 @@ const AddNotice=(props)=>{
                 {/* <input className='input-group input-group-sm mb-3' type="text" value={msg} placeholder="message" onChange={(e) => setMsg(e.currentTarget.value)}/>
                 <input type="text" value={from} placeholder="from" onChange={(e) => setFrom(e.currentTarget.value)}/>
                 <input type="text" value={to} placeholder="to" onChange={(e) => setTo(e.currentTarget.value)}/> */}
-                
+                <div class="input-group mb-3">
+                    <span className="input-group-text" id="inputGroup-sizing-default">Title</span>
+                    <input type="text" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" onChange={(e) => setTitle(e.currentTarget.value)}/>
+                </div>
+
                 <div class="input-group mb-3">
                     <span className="input-group-text" id="inputGroup-sizing-default">Notice</span>
                     <input type="text" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" onChange={(e) => setMsg(e.currentTarget.value)}/>
                 </div>
 
-                <div class="input-group mb-3">
+                
+
+                {/* <div class="input-group mb-3">
                     <span className="input-group-text" id="inputGroup-sizing-default">From</span>
                     <input type="text" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" onChange={(e) => setFrom(e.currentTarget.value)}/>
-                </div>
+                </div> */}
 
                 <div class="input-group mb-3">
                     <span className="input-group-text" id="inputGroup-sizing-default">To</span>
@@ -201,10 +228,10 @@ const AddNotice=(props)=>{
             <button onClick={(e)=>{
                 e.preventDefault
                 try{
-                    props.handleAdd(from,to,msg,props.data._id)
+                    props.handleAdd(title,from,to,msg,props.data._id)
                 }
                 catch{
-                    props.handleAdd(from,to,msg);
+                    props.handleAdd(title,from,to,msg);
                 }}} class="btn btn-success"> 
                 Add
                 

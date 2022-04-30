@@ -48,7 +48,9 @@ export function Login(props) {
             localStorage.setItem('token', response.data);
             navigate(`/dashboard/${name}`);
         }).catch((error) => {
+            alert(error)
             console.log(error.response);
+            setMsg(error.response.data)
         });
     };
 
@@ -58,31 +60,32 @@ export function Login(props) {
                 Going to do login stuff here
             </p>
             <form onSubmit={handleLogin}>
-                <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Email address</label>
+                <div className="mb-3">
+                    <label for="exampleInputEmail1" className="form-label">Email address</label>
 
                     <input
                         type="text"
                         value={name}
                         onChange={(e) => setUname(e.currentTarget.value)}
-                        class="form-control"
+                        className="form-control"
                         id="exampleInputEmail1"
                         aria-describedby="emailHelp" />
 
-                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                    <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                    <label for="exampleInputPassword1" className="form-label">Password</label>
 
                     <input
                         value={password}
                         onChange={(e) => setPassword(e.currentTarget.value)}
                         type="text"
-                        class="form-control"
+                        className="form-control"
                         id="exampleInputPassword1" />
 
                 </div>
-                <button type="submit" class="btn btn-primary" style={{'cursor':'pointer'}}>Submit</button>
+                {/* <button type="submit" class="btn btn-primary" style={{'cursor':'pointer','zIndex':'99'}} >Submit</button> */}
+                <input type="submit" className="btn btn-primary"/>
             </form>
 
             <p>

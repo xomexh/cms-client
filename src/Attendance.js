@@ -7,8 +7,11 @@ import moment from 'moment'
 const Attendance =()=>{
     const [attendances,setAtds]=useState([])
     let {name} = useParams();
-    const [notPunched,setPunched]=useState(true)
-    const [timer,setTimer]=useState(0)
+    // const [notPunched,setPunched]=useState(true)
+
+    const [time, setTime] = useState({ms:0, s:0, m:0, h:0});
+    const [interv, setInterv] = useState();
+    const [status, setStatus] = useState(0);
 
     useEffect(()=>{
         const user = jwtDecode(localStorage.getItem("token"));
@@ -19,46 +22,72 @@ const Attendance =()=>{
         })
         console.log('eita use effect')
 
-        const time = moment(localStorage.getItem("punchIn")).toNow(true)
-        console.log(time)
+        // const time = moment(localStorage.getItem("punchIn")).toNow(true)
+        console.log(localStorage.getItem("punchIn"))
     },[])
 
     const handlePunchIn =()=>{
         axios.post('http://localhost:3000/attendance',{
             uname:name,
-            date:"2022-09-25",
+            date:moment().format("YYYY-MM-DD"),
+            punchIn:Date.now()
         }).then((response)=>{
             console.log(response)
-            localStorage.setItem('punchIn', response.data.punchIn);
-            setPunched(false)
+            localStorage.setItem('punchIn', true);
+            // setPunched(false)
+            start()
         })
+
     }
 
     const handlePunchOut =()=>{
         axios.post('http://localhost:3000/attendance',{
             uname:name,
-            date:"2022-09-25",
-            punchOut:"2022-03-08T11:58:23.664Z"
+            date:moment().format("YYYY-MM-DD"),
+            punchOut:Date.now()
         }).then((response)=>{
             console.log(response)
+            stop()
         })
     }
 
-    const formatTime = (timer) => {
-        const getSeconds = `0${(timer % 60)}`.slice(-2)
-        const minutes = `${Math.floor(timer / 60)}`
-        const getMinutes = `0${minutes % 60}`.slice(-2)
-        const getHours = `0${Math.floor(timer / 3600)}`.slice(-2)
-      
-        return `${getHours} : ${getMinutes} : ${getSeconds}`
-      }
-
-    const getTime = ()=>{
-        const time = moment(localStorage.getItem("punchIn")).toNow(true)
-        console.log(time)
-    }
-
-
+    const start = () => {
+        run();
+        setStatus(1);
+        setInterv(setInterval(run, 10));
+      };
+    
+      var updatedMs = time.ms, updatedS = time.s, updatedM = time.m, updatedH = time.h;
+    
+      const run = () => {
+        if(updatedM === 60){
+          updatedH++;
+          updatedM = 0;
+        }
+        if(updatedS === 60){
+          updatedM++;
+          updatedS = 0;
+        }
+        if(updatedMs === 100){
+          updatedS++;
+          updatedMs = 0;
+        }
+        updatedMs++;
+        return setTime({ms:updatedMs, s:updatedS, m:updatedM, h:updatedH});
+      };
+    
+      const stop = () => {
+        clearInterval(interv);
+        setStatus(2);
+      };
+    
+    //   const reset = () => {
+    //     clearInterval(interv);
+    //     setStatus(0);
+    //     setTime({ms:0, s:0, m:0, h:0})
+    //   };
+    
+    //   const resume = () => start();
     return(
         <div>
             {/* This is attendance sheet:
@@ -66,23 +95,23 @@ const Attendance =()=>{
                 <AttendanceLI key={attendance._id} data={attendance} />
             )))} */}
 
-            This is attendance
-            {notPunched? <button onClick={(e)=>{
+            This is attendance<br/>
+            {!localStorage.getItem("punchIn")? <button onClick={(e)=>{
                 e.preventDefault();
                 handlePunchIn()
                 
-            }}>
+            }}  className="btn btn-success">
                 Punch IN
             </button>:
 
             <button onClick={(e)=>{
                 e.preventDefault();
                 handlePunchOut()
-            }}>
+            }}  className="btn btn-warning">
                 Punch OUT
             </button>}
-
-            
+            <br/>
+            <DisplayComponent time={time}/>
         </div>
     )
 }
@@ -110,5 +139,23 @@ const AttendanceLI=(props)=>{
     )
 
 }
+
+function DisplayComponent(props) {
+    const h = () => {
+       if(props.time.h === 0){
+         return '';
+       }else {
+         return <span>{(props.time.h >= 10)? props.time.h : "0"+ props.time.h}</span>;
+       }
+    }
+    return (
+      <div>
+         {h()}&nbsp;&nbsp;
+         <span>{(props.time.m >= 10)? props.time.m : "0"+ props.time.m}</span>&nbsp;:&nbsp;
+         <span>{(props.time.s >= 10)? props.time.s : "0"+ props.time.s}</span>&nbsp;:&nbsp;
+         <span>{(props.time.ms >= 10)? props.time.ms : "0"+ props.time.ms}</span>
+      </div>
+    );
+  }
 
 export default Attendance;

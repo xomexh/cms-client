@@ -9,9 +9,12 @@ import Attendance from './Attendance';
 import Employees from './Employees';
 import Projects from './Projects';
 import Salary from './Salary';
-import Profiles from './Profiles';
-
-
+import EditProfiles from './Profiles';
+import Calendar from './Calender';
+import Calender2 from './Calender2';
+import TodoList from './TodoList';
+import AddEmployees from './AddEmployee';
+import AddProjects from './addProject';
 
 export function Dashboard() {
     const [data,setData] = useState([])
@@ -68,7 +71,7 @@ export function Dashboard() {
         <div>
             
         <h1>
-            The KING, always stay the KING
+            {/* The KING, always stay the KING */}
         </h1>
            
             {/* <Noticeboard/> */}
@@ -76,9 +79,12 @@ export function Dashboard() {
             {/* <Employees/>
             <Projects/>
             <Salary/> */}
-            {/* <Profiles/> */}
-        
-    
+            {/* <EditProfiles/> */}
+            {/* <Calendar/> */}
+            {/* <Calender2/> */}
+            {/* <TodoList/> */}
+            {/* <AddEmployees/> */}
+            <AddProjects/>
         </div>
     );
 }

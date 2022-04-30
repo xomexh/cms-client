@@ -76,6 +76,25 @@ export function Navbar(){
                         </Link>
                     </li>
 
+                    <li className="nav-link">
+                        <Link to='/calender'>
+                            <i className='bx bx-bar-chart-alt-2 icon' ></i>
+                            <span className="text nav-text">Calendar</span>
+                        </Link>
+                    </li>
+
+                    <li className="nav-link">
+                        <Link to='/editprofile'>
+                            <i className='bx bx-bar-chart-alt-2 icon' ></i>
+                            <span className="text nav-text">Edit Profile</span>
+                        </Link>
+                    </li>
+
+                    
+
+
+                    
+
 
                 </ul>
             </div>
