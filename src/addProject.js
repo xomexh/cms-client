@@ -21,7 +21,9 @@ const AddProjects=()=>{
     },[])
 
     const handleAdd=()=>{
-
+        const promise = axios.post('http://localhost:3000/project',project)
+        promise.then(response=>console.log(response))
+        .catch(err=>console.log(err))
     }
 
     const handleChange = e => {
@@ -34,7 +36,6 @@ const AddProjects=()=>{
 
     const handleUpdate=()=>{
         console.log(project)
-
     }
 
     const handleStuff=(value)=>{
@@ -55,11 +56,6 @@ const AddProjects=()=>{
     
     return(
         <div>
-            {/* emp Id: {profile._id}<br/>
-            Name: {profile.name}<br/>
-            Age: {profile.age}<br/>
-            Current Project: {profile.project}<br/> */}
-
         {/* <div class="row">
             <div class="col-lg-4"> */}
                 {/* <div class="card mb-4">
@@ -107,7 +103,7 @@ const AddProjects=()=>{
                         <div class="row mt-3">
                             <div class="col-md-12">
                                 <label class="labels">Date of Starting</label>
-                                <input type="text" class="form-control" placeholder="Starting Date in DD-MM-YYYY format" name="startingDate" value={project.startingDate} onChange={handleChange} />
+                                <input type="text" class="form-control" placeholder="Starting Date in DD-MM-YYYY format" name="startDate" value={project.startDate} onChange={handleChange} />
                             </div>
                             <div class="col-md-12">
                                 <label class="labels">Project Lead</label>
@@ -131,7 +127,7 @@ const AddProjects=()=>{
                         <div class="mt-5 text-center">
                         <button class="btn btn-primary profile-button" type="button" onClick={(e)=>{
                             e.preventDefault;
-                            handleUpdate()
+                            handleAdd()
                         }}>Add Project</button>
                             {/* <input type="submit" className="btn btn-primary"/> */}
                         </div>

@@ -10,6 +10,7 @@ import Navbar from './Navbar';
 import EditProfile from './Profiles';
 import Employees from './Employees';
 import Calender2 from './Calender2';
+import EditProjects from './EditProjects';
 
 export function App() {
     
@@ -38,6 +39,7 @@ export function App() {
                 <Route path="/employees" element={<Employees/>}/>
                 <Route path="/editprofile" element={<EditProfile/>}/>
                 <Route path="/calender" element={<Calender2/>}/>
+                <Route path="/editproject/:pname" element={<EditProjects/>}/>
             </Routes>
             </section>
             

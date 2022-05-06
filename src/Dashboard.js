@@ -15,9 +15,29 @@ import Calender2 from './Calender2';
 import TodoList from './TodoList';
 import AddEmployees from './AddEmployee';
 import AddProjects from './addProject';
+import EditProjects from './EditProjects';
+import Leaves from './Leaves';
 
-export function Dashboard() {
-    const [data,setData] = useState([])
+const  Dashboard=()=> {
+    const [data,setData] = useState({
+        _id: "626cbca6e9c8c926bed5c615",
+        name: "TestProject",
+        startDate: "2022-03-22T00:00:00.000Z",
+        projectLead: "Somesh",
+        members: [
+            {
+                "empId": "6256b0f6e75a3d0482c67f1d",
+                "_id": "626cbca6e9c8c926bed5c616",
+                // "remark": "good boy",
+                // "rating": 7
+            },
+            {
+                "empId": "6264efe6544f50af3314d894",
+                "_id": "626cbca6e9c8c926bed5c617"
+            }
+        ],
+        __v: 0
+    })
     let navigate = useNavigate();
     let {name} = useParams();
 
@@ -36,7 +56,11 @@ export function Dashboard() {
             if(name!=user.user.uname)
             return navigate("/error")
 
-
+            // const promise=axios.get('http://localhost:3000/project/TestProject')
+            // promise.then((response)=>{
+            //     console.log(response.data)
+            //     setData(response.data)
+            // })
         }
         catch(ex){}
         
@@ -76,15 +100,17 @@ export function Dashboard() {
            
             {/* <Noticeboard/> */}
             {/* <Attendance /> */}
-            {/* <Employees/>
-            <Projects/>
-            <Salary/> */}
+            {/* <Employees/> */}
+            {/* <Projects/> */}
+            {/* <Salary/> */}
             {/* <EditProfiles/> */}
             {/* <Calendar/> */}
             {/* <Calender2/> */}
             {/* <TodoList/> */}
             {/* <AddEmployees/> */}
-            <AddProjects/>
+            {/* <AddProjects/> */}
+            {/* <EditProjects data={data}/> */}
+            <Leaves/>
         </div>
     );
 }

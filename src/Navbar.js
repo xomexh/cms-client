@@ -90,6 +90,13 @@ export function Navbar(){
                         </Link>
                     </li>
 
+                    <li className="nav-link">
+                        <Link to='/editproject'>
+                            <i className='bx bx-bar-chart-alt-2 icon' ></i>
+                            <span className="text nav-text">Edit Project</span>
+                        </Link>
+                    </li>
+
                     
 
 

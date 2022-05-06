@@ -54,46 +54,8 @@ const AddEmployees=()=>{
                                 <input type="text" class="form-control" value={employee.password} name="password" onChange={handleChange} placeholder="Password"/>
                             </div>
                         </div>
-                        {/* <div class="row mt-3">
-                            <div class="col-md-12">
-                                <label class="labels">Mobile Number</label>
-                                <input type="text" class="form-control" placeholder="Enter phone number" name="mobilenumber" value={profile.mobilenumber} onChange={handleChange} />
-                            </div>
-                            <div class="col-md-12">
-                                <label class="labels">Address Line 1</label>
-                                <input type="text" class="form-control" placeholder="Enter address" name="address" value={profile.address} onChange={handleChange} />
-                            </div>
-                            <div class="col-md-12">
-                                <label class="labels">Address Line 2</label>
-                                <input type="text" class="form-control" placeholder="Enter City" name="city" value={profile.city} onChange={handleChange}/>
-                            </div>
-                            <div class="col-md-12">
-                                <label class="labels">Postcode</label>
-                                <input type="text" class="form-control" placeholder="Enter Postcode" name="pincode" value={profile.pincode} onChange={handleChange}/>
-                            </div>
-                            <div class="col-md-12">
-                                <label class="labels">State</label>
-                                <input type="text" class="form-control" placeholder="Enter State" name="state" value={profile.state} onChange={handleChange}/>
-                            </div>
-                            <div class="col-md-12">
-                                <label class="labels">Email ID</label>
-                                <input type="text" class="form-control" placeholder="Enter email-id" name="emailid" value={profile.emailid} onChange={handleChange}/>
-                            </div>
-                            <div class="col-md-12">
-                                <label class="labels">Education</label>
-                                <input type="text" class="form-control" placeholder="College" name="educationBachelors" value={profile.educationBachelors} onChange={handleChange}/>
-                            </div>
-                        </div> */}
-                        {/* <div class="row mt-3">
-                            <div class="col-md-6">
-                                <label class="labels">Country</label>
-                                <input type="text" class="form-control" placeholder="country" value=""/>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="labels">State/Region</label>
-                                <input type="text" class="form-control" value="" placeholder="state"/>
-                            </div>
-                        </div> */}
+                        
+                        
                         <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button" onClick={(e)=>{
                             e.preventDefault;
                             handleAdd()
