@@ -92,25 +92,30 @@ const  Dashboard=()=> {
     // );
 
     return(
-        <div>
+        <div className='main-app-here'>
+            <div className='rowC' style={{
+                "display":"flex",
+                "flexDirection":"row",
+                "margin":"30px",
+                "flexWrap":"wrap",
+                "gap":"10px"
+            }}>
+                <Attendance />
+                <TodoList/>
+            </div>
+        <Noticeboard/>
             
-        <h1>
-            {/* The KING, always stay the KING */}
-        </h1>
-           
-            {/* <Noticeboard/> */}
-            {/* <Attendance /> */}
             {/* <Employees/> */}
             {/* <Projects/> */}
             {/* <Salary/> */}
             {/* <EditProfiles/> */}
             {/* <Calendar/> */}
             {/* <Calender2/> */}
-            {/* <TodoList/> */}
+            
             {/* <AddEmployees/> */}
             {/* <AddProjects/> */}
             {/* <EditProjects data={data}/> */}
-            <Leaves/>
+            {/* <Leaves/> */}
         </div>
     );
 }

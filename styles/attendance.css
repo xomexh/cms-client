@@ -1,0 +1,22 @@
+.stopwatch {
+    padding: 60px 0px;
+    text-align: center;
+    background: #f5ff66;
+    padding: 20px;
+    border-radius: 10px;
+    padding-bottom: 32px;
+    padding-top: 24px;
+    min-height: 260px;
+}
+  .stopwatch span{
+    background:#00ABA9;
+    color: #fff;
+    display: inline-block;
+    font-family: monospace;
+    font-size: 22px;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 5px;
+    width: 70px;
+}
+  

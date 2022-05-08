@@ -4,6 +4,8 @@ import jwtDecode from 'jwt-decode';
 import { useParams } from 'react-router-dom';
 import moment from 'moment'
 
+import '../styles/attendance.css'
+
 const Attendance =()=>{
     const [attendances,setAtds]=useState([])
     let {name} = useParams();
@@ -89,29 +91,25 @@ const Attendance =()=>{
     
     //   const resume = () => start();
     return(
-        <div>
-            {/* This is attendance sheet:
-            {attendances.map((attendance=>(
-                <AttendanceLI key={attendance._id} data={attendance} />
-            )))} */}
-
-            This is attendance<br/>
-            {!localStorage.getItem("punchIn")? <button onClick={(e)=>{
-                e.preventDefault();
-                handlePunchIn()
-                
-            }}  className="btn btn-success">
-                Punch IN
-            </button>:
-
-            <button onClick={(e)=>{
-                e.preventDefault();
-                handlePunchOut()
-            }}  className="btn btn-warning">
-                Punch OUT
-            </button>}
-            <br/>
-            <DisplayComponent time={time}/>
+        <div className='attendance-app'>
+            <div className='clock-holder'>
+                <div className='stopwatch'>
+                    <DisplayComponent time={time}/>
+                    {!localStorage.getItem("punchIn")? <button onClick={(e)=>{
+                        e.preventDefault();
+                        handlePunchIn()
+                        
+                    }}  className="btn btn-success">
+                        Punch IN
+                    </button>:
+                    <button onClick={(e)=>{
+                        e.preventDefault();
+                        handlePunchOut()
+                    }}  className="btn btn-warning">
+                        Punch OUT
+                    </button>}
+                </div>
+            </div>
         </div>
     )
 }
