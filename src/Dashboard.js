@@ -96,9 +96,9 @@ const  Dashboard=()=> {
             <div className='rowC' style={{
                 "display":"flex",
                 "flexDirection":"row",
-                "margin":"30px",
+                "marginBottom":"20px",
                 "flexWrap":"wrap",
-                "gap":"10px"
+                "gap":"20px"
             }}>
                 <Attendance />
                 <TodoList/>

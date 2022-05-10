@@ -5,14 +5,28 @@ import { useParams,useNavigate } from 'react-router-dom';
 
 import Accordion from 'react-bootstrap/Accordion'
 
+import AddProjects from './addProject';
+// import { Button } from '@mui/material';
+
 
 const Projects =()=>{
     const [projects,setProj]=useState([])
     const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage] = useState(2);
+    const [postsPerPage] = useState(6);
+    const [admin,setAdmin]=useState(false)
+
     let navigate = useNavigate();
 
     useEffect(()=>{
+        const jwt = localStorage.getItem("token")
+
+        if(!jwt)
+        return navigate("/error")
+        const user = jwtDecode(jwt);
+
+        setAdmin(user.user.isAdmin);
+
+
         const promise = axios.get('http://localhost:3000/project/all')
         promise.then((response)=>{
             console.log(response.data)
@@ -32,18 +46,30 @@ const Projects =()=>{
 
     return(
         <div>
-            Eita mo Projects
-            {currentPosts.map((project)=>{
-                // if(project.members.includes("SomeshY")){
-                    return <Project key={project._id} data={project} handleEdit={handleEdit}/>
-                // }
-            })}
             <div>
-            <Pagination
-            postsPerPage={postsPerPage}
-            totalPosts={projects.length}
-            paginate={paginate}
-             /> 
+                <h1>Projects</h1>
+                {currentPosts.map((project)=>{
+                    // if(project.members.includes("SomeshY")){
+                        return <Project key={project._id} data={project} handleEdit={handleEdit}/>
+                    // }
+                })}
+                <div>
+                <Pagination
+                postsPerPage={postsPerPage}
+                totalPosts={projects.length}
+                paginate={paginate}
+                /> 
+
+                </div>
+            </div>
+            <div className='stuff-add-project'>
+                {admin?<button 
+                onClick={(e)=>{
+                    e.preventDefault()
+                    navigate('/addproject')
+                }}
+                class="btn btn-success"
+                >Add Project</button>:null}
             </div>
         </div>
     )

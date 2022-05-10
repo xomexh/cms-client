@@ -31,7 +31,10 @@ const EditProjects=()=>{
     };
 
     const handleAdd =()=>{
-        console.log(members)
+        const promise = axios.post('http://localhost:3000/project',proj)
+        promise.then((response)=>{
+            console.log(response)
+        })
     }
 
     const handleMember=(event,index)=>{

@@ -11,6 +11,9 @@ import EditProfile from './Profiles';
 import Employees from './Employees';
 import Calender2 from './Calender2';
 import EditProjects from './EditProjects';
+import Projects from './Projects';
+import AddProjects from './addProject';
+import Leaves from './Leaves';
 
 export function App() {
     
@@ -40,7 +43,10 @@ export function App() {
                 <Route path="/editprofile" element={<EditProfile/>}/>
                 <Route path="/calender" element={<Calender2/>}/>
                 <Route path="/editproject/:pname" element={<EditProjects/>}/>
-            </Routes>
+                <Route path="/projects" element={<Projects/>}/>
+                <Route path="/addproject" element={<AddProjects/>}/>
+                <Route path="/leaves/:name" element={<Leaves/>} />
+            </Routes> 
             </section>
             
             

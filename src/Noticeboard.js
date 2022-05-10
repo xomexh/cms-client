@@ -16,6 +16,7 @@ const Noticeboard = ()=>{
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage] = useState(5);
     const [filteredNotice,setFilteredNotice]=useState([])
+    const [lol,setlol]=useState(false)
 
     useEffect(()=>{
         const promise = axios.get('http://localhost:3000/messages/all')
@@ -26,7 +27,7 @@ const Noticeboard = ()=>{
             setFilteredNotice(response.data)
         })
         console.log('eita use effect')
-    },[])
+    },[lol])
 
     const handleDelete =(id)=>{
         const original = notices;
@@ -37,6 +38,7 @@ const Noticeboard = ()=>{
             console.log(response)
         })
         console.log(id)
+        setlol(prevState=>!prevState)
     }
 
     const handleAdd=(title,from,to,msg,id)=>{
@@ -76,7 +78,21 @@ const Noticeboard = ()=>{
         <div className='notice-box'>
             <h1>Notice Board</h1>
             <div>
-                <input type="text" placeholder='search notices' onChange={handleFilter}/>
+                {/* <input type="text" placeholder='search notices' onChange={handleFilter}/> */}
+                <div class="card-body row no-gutters align-items-center">
+                    <div class="col-auto">
+                        <i class="fas fa-search h4 text-body"></i>
+                    </div>
+                                    
+                    <div class="col">
+                        <input class="form-control form-control-lg form-control-borderless" type="text" placeholder="Search topics or keywords" onChange={handleFilter}/>
+                    </div>
+                                    
+                    <div class="col-auto">
+                         <button class="btn btn-lg btn-success" type="submit">Search</button>
+                    </div>
+                                    
+                </div>
             {currentPosts.map((notice => (
                 <Notice key={notice._id} data={notice} handleDelete={handleDelete} handleAdd={handleAdd}/>
             )))}
@@ -122,16 +138,23 @@ const Notice = (props)=>{
         setNotice(props.data)
     },[])
     return(
-        <div>
+        <div className='acc-items'>
             <Accordion >
                 <Accordion.Item eventKey={notice.id}>
                 <Accordion.Header>
                     {notice.title}
-                    <Badge bg="secondary">{notice.from}</Badge>
+                    <div className='funny' alig>
+                        <Badge bg="secondary">{notice.from}</Badge>
+                    </div>
+                    <div className='funny-2' alig>
+                        <Badge bg="secondary">{notice.to}</Badge>
+                    </div>
+
+                    
                 </Accordion.Header>
                 <Accordion.Body>{notice.message}<br/>
-                From: {notice.from}
-                To:{notice.to}
+                {/* From: {notice.from}
+                To:{notice.to} */}
                 <br/>
 
                 <button onClick={(e)=>{
@@ -169,7 +192,7 @@ const Notice = (props)=>{
                 //ReactDOM.render(<AddNotice data={notice} handleAdd={props.handleAdd} />, document.getElementById('sandy'));
             }}>Update
             </button> */}
-            <div id="sandy"></div>
+
         </div>
     )
 }

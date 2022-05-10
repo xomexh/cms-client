@@ -7,38 +7,43 @@ import moment from 'moment'
 import '../styles/attendance.css'
 
 const Attendance =()=>{
-    const [attendances,setAtds]=useState([])
     let {name} = useParams();
-    // const [notPunched,setPunched]=useState(true)
 
-    const [time, setTime] = useState({ms:0, s:0, m:0, h:0});
-    const [interv, setInterv] = useState();
-    const [status, setStatus] = useState(0);
+    const [time, setTime] = useState(0);
+    const [timerOn, setTimerOn] = useState(false);
 
     useEffect(()=>{
-        const user = jwtDecode(localStorage.getItem("token"));
-        const promise = axios.get(`http://localhost:3000/attendance/${user.user.uname}`)
-        promise.then((response)=>{
-            console.log(response)
-            setAtds(response.data)
-        })
-        console.log('eita use effect')
+        if(localStorage.getItem("punchIn")){
+            setTimerOn(true)
+        }
 
-        // const time = moment(localStorage.getItem("punchIn")).toNow(true)
-        console.log(localStorage.getItem("punchIn"))
-    },[])
+       let interval=null;
+
+       if (timerOn) {
+        interval = setInterval(() => {
+            var punch=localStorage.getItem("punchIn")
+            var diff=Date.now()-punch
+            setTime(diff)
+        }, 1000);
+      }else if(!timerOn){
+          clearInterval(interval)
+      }
+  
+      return () => clearInterval(interval);
+       
+    },[timerOn])
 
     const handlePunchIn =()=>{
+        setTimerOn(true)
         axios.post('http://localhost:3000/attendance',{
             uname:name,
             date:moment().format("YYYY-MM-DD"),
             punchIn:Date.now()
         }).then((response)=>{
             console.log(response)
-            localStorage.setItem('punchIn', true);
-            // setPunched(false)
-            start()
+            localStorage.setItem('punchIn', Date.now());
         })
+        
 
     }
 
@@ -49,39 +54,11 @@ const Attendance =()=>{
             punchOut:Date.now()
         }).then((response)=>{
             console.log(response)
-            stop()
         })
+        localStorage.removeItem('punchIn')
     }
 
-    const start = () => {
-        run();
-        setStatus(1);
-        setInterv(setInterval(run, 10));
-      };
-    
-      var updatedMs = time.ms, updatedS = time.s, updatedM = time.m, updatedH = time.h;
-    
-      const run = () => {
-        if(updatedM === 60){
-          updatedH++;
-          updatedM = 0;
-        }
-        if(updatedS === 60){
-          updatedM++;
-          updatedS = 0;
-        }
-        if(updatedMs === 100){
-          updatedS++;
-          updatedMs = 0;
-        }
-        updatedMs++;
-        return setTime({ms:updatedMs, s:updatedS, m:updatedM, h:updatedH});
-      };
-    
-      const stop = () => {
-        clearInterval(interv);
-        setStatus(2);
-      };
+      
     
     //   const reset = () => {
     //     clearInterval(interv);
@@ -104,7 +81,9 @@ const Attendance =()=>{
                     </button>:
                     <button onClick={(e)=>{
                         e.preventDefault();
+                        setTimerOn(false)
                         handlePunchOut()
+
                     }}  className="btn btn-warning">
                         Punch OUT
                     </button>}
@@ -139,19 +118,11 @@ const AttendanceLI=(props)=>{
 }
 
 function DisplayComponent(props) {
-    const h = () => {
-       if(props.time.h === 0){
-         return '';
-       }else {
-         return <span>{(props.time.h >= 10)? props.time.h : "0"+ props.time.h}</span>;
-       }
-    }
     return (
       <div>
-         {h()}&nbsp;&nbsp;
-         <span>{(props.time.m >= 10)? props.time.m : "0"+ props.time.m}</span>&nbsp;:&nbsp;
-         <span>{(props.time.s >= 10)? props.time.s : "0"+ props.time.s}</span>&nbsp;:&nbsp;
-         <span>{(props.time.ms >= 10)? props.time.ms : "0"+ props.time.ms}</span>
+        <span>{("0" + Math.floor((props.time / 60000) % 60)).slice(-2)}:</span>
+        <span>{("0" + Math.floor((props.time / 1000) % 60)).slice(-2)}:</span>
+        {/* <span>{("0" + ((props.time / 10) % 100)).slice(-2)}</span> */}
       </div>
     );
   }

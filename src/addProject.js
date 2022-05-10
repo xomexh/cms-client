@@ -21,6 +21,7 @@ const AddProjects=()=>{
     },[])
 
     const handleAdd=()=>{
+        console.log(project)
         const promise = axios.post('http://localhost:3000/project',project)
         promise.then(response=>console.log(response))
         .catch(err=>console.log(err))

@@ -1,8 +1,8 @@
 .notice-box{
     padding: 20px;
-    margin-left: auto;
-    margin-right: auto;
-    background: #f5ff66;
+    width: auto;
+    max-width: 740px;
+    background: #eeeeea;
     border-radius: 10px;
     padding-bottom: 32px;
     padding-top: 24px;
@@ -11,4 +11,22 @@
 .input-notice{
     margin-right: 15%;
     margin-left: 10% ;
+}
+
+.pagination{
+    margin: 10px;
+}
+
+.page-item{
+    margin:2px;
+}
+
+.funny{
+    margin-left:25px;
+    margin-right: 10px;
+    
+}
+
+.acc-items{
+    margin: 5px;
 }

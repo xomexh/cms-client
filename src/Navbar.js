@@ -64,36 +64,36 @@ export function Navbar(){
 
                     <li className="nav-link">
                         <Link to='/notices'>
-                            <i className='bx bx-bar-chart-alt-2 icon' ></i>
+                            <i className='bx bx-message-detail icon' ></i>
                             <span className="text nav-text">Noticeboard</span>
                         </Link>
                     </li>
 
                     <li className="nav-link">
                         <Link to='/employees'>
-                            <i className='bx bx-bar-chart-alt-2 icon' ></i>
+                            <i className='bx bx-user icon' ></i>
                             <span className="text nav-text">Employees(employees.js)</span>
                         </Link>
                     </li>
 
                     <li className="nav-link">
                         <Link to='/calender'>
-                            <i className='bx bx-bar-chart-alt-2 icon' ></i>
+                            <i className='bx bx-calendar icon' ></i>
                             <span className="text nav-text">Calendar</span>
                         </Link>
                     </li>
 
                     <li className="nav-link">
                         <Link to='/editprofile'>
-                            <i className='bx bx-bar-chart-alt-2 icon' ></i>
+                            <i className='bx bx-user-circle icon' ></i>
                             <span className="text nav-text">Edit Profile</span>
                         </Link>
                     </li>
 
                     <li className="nav-link">
-                        <Link to='/editproject'>
-                            <i className='bx bx-bar-chart-alt-2 icon' ></i>
-                            <span className="text nav-text">Edit Project</span>
+                        <Link to='/projects'>
+                            <i className='bx bx-briefcase-alt icon' ></i>
+                            <span className="text nav-text">Projects</span>
                         </Link>
                     </li>
 

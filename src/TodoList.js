@@ -4,19 +4,35 @@ import React, { useState, useEffect, useRef } from 'react';
 import { RiCloseCircleLine } from 'react-icons/ri';
 import { TiEdit } from 'react-icons/ti';
 import '../styles/TodoList.css'
+import axios from 'axios';
+
+import { useParams } from 'react-router-dom';
 
 const  TodoList=()=>{
+  let {name} = useParams();
   const [todos, setTodos] = useState([]);
+  const [change,setChange]=useState(false)
+
+  useEffect(()=>{
+    const promise= axios.get(`http://localhost:3000/todo/${name}`)
+    promise.then((response)=>{
+      console.log(response.data)
+      setTodos(response.data)
+    })
+  },[change])
 
   const addTodo = todo => {
-    if (!todo.text || /^\s*$/.test(todo.text)) {
+    if (!todo.item || /^\s*$/.test(todo.item)) {
       return;
     }
+    
+    const promise=axios.post('http://localhost:3000/todo/',todo)
+    promise.then((response)=>{console.log(response)})
+    setChange(prevState=>!prevState)
+    // const newTodos = [todo, ...todos];
 
-    const newTodos = [todo, ...todos];
-
-    setTodos(newTodos);
-    console.log(...todos);
+    // setTodos(newTodos);
+    // console.log(...todos);
   };
 
   const updateTodo = (todoId, newValue) => {
@@ -28,19 +44,27 @@ const  TodoList=()=>{
   };
 
   const removeTodo = id => {
-    const removedArr = [...todos].filter(todo => todo.id !== id);
+    // const removedArr = [...todos].filter(todo => todo.id !== id);
 
-    setTodos(removedArr);
+    // setTodos(removedArr);
+
+    const promise = axios.delete(`http://localhost:3000/todo/${id}`)
+    promise.then(response=>console.log(response))
+    setChange(prevState=>!prevState)
   };
 
   const completeTodo = id => {
-    let updatedTodos = todos.map(todo => {
-      if (todo.id === id) {
-        todo.isComplete = !todo.isComplete;
-      }
-      return todo;
-    });
-    setTodos(updatedTodos);
+    // let updatedTodos = todos.map(todo => {
+    //   if (todo.id === id) {
+    //     todo.isComplete = !todo.isComplete;
+    //   }
+    //   return todo;
+    // });
+    // setTodos(updatedTodos);
+    
+    const promise=axios.post('http://localhost:3000/todo/',{_id:id})
+    promise.then((response)=>{console.log(response)})
+    setChange(prevState=>!prevState)
   };
 
   return (
@@ -59,7 +83,7 @@ const  TodoList=()=>{
 
 const TodoForm=(props)=>{
   const [input, setInput] = useState(props.edit ? props.edit.value : '');
-
+  let {name} = useParams();
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -74,8 +98,8 @@ const TodoForm=(props)=>{
     e.preventDefault();
 
     props.onSubmit({
-      id: Math.floor(Math.random() * 10000),
-      text: input
+      uname:name,
+      item: input
     });
     setInput('');
   };
@@ -138,16 +162,16 @@ const Todo = ({ todos, completeTodo, removeTodo, updateTodo }) => {
       className={todo.isComplete ? 'todo-row complete' : 'todo-row'}
       key={index}
     >
-      <div key={todo.id} onClick={() => completeTodo(todo.id)}>
-        {todo.text}
+      <div key={todo._id} onClick={() => completeTodo(todo._id)}>
+        {todo.item}
       </div>
       <div className='icons'>
         <RiCloseCircleLine
-          onClick={() => removeTodo(todo.id)}
+          onClick={() => removeTodo(todo._id)}
           className='delete-icon'
         />
         <TiEdit
-          onClick={() => setEdit({ id: todo.id, value: todo.text })}
+          onClick={() => setEdit({ id: todo.id, value: todo.item })}
           className='edit-icon'
         />
       </div>

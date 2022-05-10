@@ -1,8 +1,8 @@
 .notice-box{
     padding: 20px;
-    margin-left: auto;
-    margin-right: auto;
-    background: #f5ff66;
+    width: auto;
+    max-width: 740px;
+    background: #eeeeea;
     border-radius: 10px;
     padding-bottom: 32px;
     padding-top: 24px;
@@ -12,10 +12,28 @@
     margin-right: 15%;
     margin-left: 10% ;
 }
+
+.pagination{
+    margin: 10px;
+}
+
+.page-item{
+    margin:2px;
+}
+
+.funny{
+    margin-left:25px;
+    margin-right: 10px;
+    
+}
+
+.acc-items{
+    margin: 5px;
+}
 .stopwatch {
     padding: 60px 0px;
     text-align: center;
-    background: #f5ff66;
+    background: #eeeeea;
     padding: 20px;
     border-radius: 10px;
     padding-bottom: 32px;
@@ -23,8 +41,8 @@
     min-height: 260px;
 }
   .stopwatch span{
-    background:#00ABA9;
-    color: #fff;
+    background:#ffffff;
+    color: rgb(0, 0, 0);
     display: inline-block;
     font-family: monospace;
     font-size: 22px;
@@ -441,7 +459,7 @@
     justify-content: start; */
     width: 500px;
     min-height: 260px;
-    background: #fffc66;
+    background: #eeeeea;
     text-align: center;
     /* margin: 128px auto; */
     border-radius: 10px;
