@@ -8,6 +8,7 @@ import Accordion from 'react-bootstrap/Accordion'
 import AddProjects from './addProject';
 // import { Button } from '@mui/material';
 
+import '../styles/projects.css'
 
 const Projects =()=>{
     const [projects,setProj]=useState([])
@@ -45,8 +46,8 @@ const Projects =()=>{
     }
 
     return(
-        <div>
-            <div>
+        <div className='project-canvas'>
+            <div >
                 <h1>Projects</h1>
                 {currentPosts.map((project)=>{
                     // if(project.members.includes("SomeshY")){

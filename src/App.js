@@ -14,6 +14,10 @@ import EditProjects from './EditProjects';
 import Projects from './Projects';
 import AddProjects from './addProject';
 import Leaves from './Leaves';
+import AdminPage from './AdminPage';
+import AddEmployees from './AddEmployee';
+import AddLeave from './AddLeaveRequests';
+import Salary from './Salary';
 
 export function App() {
     
@@ -46,6 +50,11 @@ export function App() {
                 <Route path="/projects" element={<Projects/>}/>
                 <Route path="/addproject" element={<AddProjects/>}/>
                 <Route path="/leaves/:name" element={<Leaves/>} />
+                <Route path="/adminpage" element={<AdminPage/>} />
+                <Route path="/addemployee" element={<AddEmployees/>} />
+                <Route path="/addleave" element={<AddLeave/>} />
+                <Route path="/salary" element={<Salary/>} />
+
             </Routes> 
             </section>
             

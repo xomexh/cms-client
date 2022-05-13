@@ -51,7 +51,7 @@ const  Dashboard=()=> {
 
             const user = jwtDecode(jwt);
             setData(user.user);
-            console.log(user.user)
+            //console.log(user.user)
 
             if(name!=user.user.uname)
             return navigate("/error")

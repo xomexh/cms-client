@@ -1,8 +1,8 @@
 import React,{useState,useEffect} from 'react';
 import axios from 'axios';
 import { render } from 'react-dom';
-import ReactDOM from 'react-dom';
 import jwtDecode from 'jwt-decode';
+import { useParams,useNavigate  } from 'react-router-dom';
 
 
 import Accordion from 'react-bootstrap/Accordion'
@@ -18,7 +18,20 @@ const Noticeboard = ()=>{
     const [filteredNotice,setFilteredNotice]=useState([])
     const [lol,setlol]=useState(false)
 
+    const [isAdmin,setisAdmin]=useState(false)
+
+    const navigate = useNavigate();
+
+
     useEffect(()=>{
+        const jwt = localStorage.getItem("token")
+
+        if(!jwt)
+        return navigate("/error")
+        const user = jwtDecode(jwt);
+
+        setisAdmin(user.user.isAdmin);
+
         const promise = axios.get('http://localhost:3000/messages/all')
         promise.then((response)=>{
             console.log(response)
@@ -85,7 +98,7 @@ const Noticeboard = ()=>{
                     </div>
                                     
                     <div class="col">
-                        <input class="form-control form-control-lg form-control-borderless" type="text" placeholder="Search topics or keywords" onChange={handleFilter}/>
+                        <input class="form-control form-control-lg form-control-borderless" type="text" placeholder="Search Notice" onChange={handleFilter}/>
                     </div>
                                     
                     <div class="col-auto">
@@ -102,8 +115,9 @@ const Noticeboard = ()=>{
             totalPosts={notices.length}
             paginate={paginate}
              />
-
-            <AddNotice handleAdd={handleAdd}/>
+            
+            {isAdmin?<AddNotice handleAdd={handleAdd}/>:null}
+            
         </div>
     )
 }
@@ -174,25 +188,6 @@ const Notice = (props)=>{
                 </Accordion.Body>
                 </Accordion.Item>
             </Accordion>
-            {/* Id: {notice._id}<br></br>
-            from: {notice.from}<br></br>
-            to:{notice.to}<br></br>
-
-            message: {notice.message}<br></br>
-
-            date:{notice.date}<br></br> */}
-
-            {/* <button onClick={(e)=>{
-                e.preventDefault();
-                props.handleDelete(notice._id)}}>Delete
-            </button>
-
-            <button onClick={(e)=>{
-                e.preventDefault();
-                //ReactDOM.render(<AddNotice data={notice} handleAdd={props.handleAdd} />, document.getElementById('sandy'));
-            }}>Update
-            </button> */}
-
         </div>
     )
 }

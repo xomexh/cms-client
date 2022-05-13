@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
-import { useParams } from 'react-router-dom';
+import { useParams,useNavigate  } from 'react-router-dom';
 
 import logo from '../logo.png'
 import Accordion from 'react-bootstrap/Accordion'
@@ -11,9 +11,18 @@ const Employees=()=>{
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage] = useState(2);
 
+    const navigate = useNavigate();
+
     useEffect(()=>{
+      const jwt = localStorage.getItem("token")
+
+      if(!jwt)
+      return navigate("/error")
+
+
         const promise =axios.get('http://localhost:3000/employees/all');
         promise.then((response)=>{
+            console.log(response.data)
             setE(response.data)
         }).catch(error => console.log(error))
 
@@ -64,7 +73,8 @@ const Employee =(props)=>{
                         {employee.firstname} {employee.lastname}
                    </Accordion.Header>
                    <Accordion.Body>
-                    current project: {employee.currentProject}<br/>
+                    Current project: {employee.currentProject}<br/>
+                    Email Id: {employee.emailid}
                     
                    </Accordion.Body>
                </Accordion.Item>

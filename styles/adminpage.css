@@ -1,0 +1,8 @@
+.admin-page{
+    margin: 20px;
+}
+
+button.btn.btn-success.inAdmin{
+    margin: 10px;
+    width: 150px;
+}

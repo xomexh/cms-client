@@ -94,7 +94,11 @@ const Calender2 = () => {
         <div>
             <button class="btn btn-success" onClick={(e)=>{
               navigate(`/leaves/${username}`)
-            }}>Show Leave Requests</button>
+            }}>Show Leave Requests</button><br/>
+
+            <button class="btn btn-success" onClick={(e)=>{
+              navigate(`/addleave`)
+            }}>Request Leave</button>
         </div>
   
         {/* {
@@ -138,7 +142,7 @@ const CalendarHeader = ({ onNext, onBack, dateDisplay }) => {
 
 const Day = ({ day, onClick,att,dateDisplay }) => {
     const className = `day ${day.value === 'padding' ? 'padding' : ''} ${day.isCurrentDay ? 'currentDay' : ''}`;
-    
+    const store=[]
     return (
       <div onClick={onClick} className={className}>
         {day.value === 'padding' ? '' : day.value}

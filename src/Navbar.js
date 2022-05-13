@@ -14,7 +14,7 @@ export function Navbar(){
             const jwt = localStorage.getItem("token")
             const user = jwtDecode(jwt);
             setData(user.user);
-            console.log(user.user)
+            //console.log(user.user)
             if (inactive) {
                 removeActiveClassFromSubMenu();
               }
@@ -43,7 +43,7 @@ export function Navbar(){
 
                 <div className="text logo-text">
                     <span className="name">Welcome</span>
-                    <span className="profession">CMS</span>
+                    <span className="profession">{data.uname}</span>
                 </div>
             </div>
 
@@ -97,13 +97,20 @@ export function Navbar(){
                         </Link>
                     </li>
 
-                    
+                    <li className="nav-link">
+                        <Link to='/salary'>
+                            <i className='bx bx-money-withdraw icon' ></i>
+                            <span className="text nav-text">Salary</span>
+                        </Link>
+                    </li>
 
-
-                    
-
-
-                </ul>
+                    {data.isAdmin?<li className="nav-link">
+                        <Link to='/adminpage'>
+                            <i className='bx bx-buildings icon' ></i>
+                            <span className="text nav-text">Admin Page</span>
+                        </Link>
+                    </li>:null}     
+           </ul>
             </div>
 
             <div className="bottom-content">

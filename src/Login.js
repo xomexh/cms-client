@@ -56,9 +56,9 @@ export function Login(props) {
 
     return (
         <div>
-            <p>
-                Going to do login stuff here
-            </p>
+            <h1>
+                Log-In Page for Demonstration
+            </h1>
             <form onSubmit={handleLogin}>
                 <div className="mb-3">
                     <label for="exampleInputEmail1" className="form-label">Email address</label>
@@ -79,7 +79,7 @@ export function Login(props) {
                     <input
                         value={password}
                         onChange={(e) => setPassword(e.currentTarget.value)}
-                        type="text"
+                        type="password"
                         className="form-control"
                         id="exampleInputPassword1" />
 

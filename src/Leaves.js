@@ -89,8 +89,9 @@ const Leaves=()=>{
     },[btn])
 
 
-    const handleApprove=(username)=>{
+    const handleApprove=(username,id)=>{
       const promise = axios.post(`http://localhost:3000/leaves`,{
+        id:id,
         uname:username,
         status:"approved"
       })
@@ -99,8 +100,9 @@ const Leaves=()=>{
       setBtn(prevState=>!prevState)
     }
 
-    const handleDecline=(username)=>{
+    const handleDecline=(username,id)=>{
       const promise = axios.post(`http://localhost:3000/leaves`,{
+        id:id,
         uname:username,
         status:"declined"
       })
@@ -155,13 +157,13 @@ const Leaves=()=>{
                 <TableCell>
                 <IconButton aria-label="delete" onClick={(e)=>{
                   e.preventDefault();
-                  handleDecline(row.uname)
+                  handleDecline(row.uname,row._id)
                 }}>
                   <DeleteIcon />
                 </IconButton>
                 <IconButton aria-label="done" color="primary" onClick={(e)=>{
                   e.preventDefault();
-                  handleApprove(row.uname)}}>
+                  handleApprove(row.uname,row._id)}}>
                   <DoneIcon/>
                 </IconButton>
                 </TableCell>

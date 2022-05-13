@@ -7,10 +7,17 @@ import FileBase64 from 'react-file-base64';
 import logo from '../logo.png'
 
 const EditProfiles =()=>{
+    const navigate = useNavigate();
     const [profile,setProfile]=useState([])
     // const [fname,setFname]=useState('')
     useEffect(()=>{
         try{
+            const jwt = localStorage.getItem("token")
+
+            if(!jwt)
+            return navigate("/error")
+
+
             const user=jwtDecode(localStorage.getItem("token"))
             console.log(user.user.uname)
             const promise = axios.get(`http://localhost:3000/employees/${user.user.uname}`)
